@@ -1,0 +1,35 @@
+services:
+  # Scraper Service (Port 8001)
+  scraper:
+    build: .
+    command: uvicorn scraper_service:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # AI Processor Service (Port 8002)
+  ai-processor:
+    build: .
+    command: uvicorn ai_service:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    environment:
+      - OLLAMA_URL=http://host.docker.internal:11434/api/generate
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Orchestrator (Port 8000)
+  orchestrator:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - scraper
+      - ai-processor
+    environment:
+      - SCRAPER_URL=http://scraper:8001/scrape
+      - AI_URL=http://ai-processor:8002/process
+    volumes:
+      - .:/app

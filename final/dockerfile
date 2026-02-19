@@ -1,0 +1,37 @@
+# Use the official Python slim image
+FROM python:3.10-slim
+
+# Set environment variables to prevent Python from writing .pyc files and to buffer stdout/stderr
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies and Chrome (Modern Debian 13/Trixie method)
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    gnupg \
+    unzip \
+    ca-certificates \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libgbm1 \
+    --no-install-recommends \
+    && curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update && apt-get install -y google-chrome-stable --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Copy and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# The command is overridden by docker-compose for each service, 
+# but we provide a default here.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
