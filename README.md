@@ -31,6 +31,9 @@ An automated microservices pipeline designed to scrape medical clinic data from 
 - run docker-compose up --build on CMD
 - click on the link to download Ollama model locally https://ollama.com/ and install
 - pull the model and open CMD and paste this command " ollama pull gemma3:4b "
+- once docker is finished open http://localhost:8000/docs on browser
+  <img width="1065" height="565" alt="2" src="https://github.com/user-attachments/assets/7924f4eb-6768-4538-b86d-47dfdf298a0f" />
+
 
 # how to get api key
 - for gemini visit https://aistudio.google.com/
