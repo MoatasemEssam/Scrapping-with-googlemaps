@@ -32,8 +32,13 @@ An automated microservices pipeline designed to scrape medical clinic data from 
 - click on the link to download Ollama model locally https://ollama.com/ and install
 - pull the model and open CMD and paste this command " ollama pull gemma3:4b "
 
+# how to get api key
+- for gemini visit https://aistudio.google.com/
+- then below on the left choose get API KEYS
+- copy the key and paste it on .env (a file which can be created and add the token inside to avoid exposing your token)
+
 # Important note
-I used Ollama locally because I used all the free tier when testing for parrallel excution
+I used Ollama locally because I consumed all the free tier token when testing for parrallel excution
 
 <img width="767" height="233" alt="1" src="https://github.com/user-attachments/assets/5dabd7a9-52a3-4f6c-8d98-09256ea7a882" />
 
